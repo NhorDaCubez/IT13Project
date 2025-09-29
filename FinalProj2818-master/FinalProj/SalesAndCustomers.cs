@@ -7,13 +7,12 @@ namespace FinalProj
 {
     public partial class SalesAndCustomers : Form
     {
-        // Using the most reliable connection string format
-        private const string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=FinalProjectDB;Integrated Security=True;TrustServerCertificate=True";
+        // Connection String
+        private const string connectionString = "Data Source=LAPTOP-VHI1EE4Q\\SQLEXPRESS;Initial Catalog=FinalProjectDB;Integrated Security=True;TrustServerCertificate=True";
 
         public SalesAndCustomers()
         {
             InitializeComponent();
-            // Call the data loading function when the form loads
             this.Load += new EventHandler(SalesAndCustomers_Load);
         }
 
@@ -22,9 +21,6 @@ namespace FinalProj
             LoadSalesData();
         }
 
-        // -----------------------------------------------------------------
-        // NEW METHOD: Fetches all sales-related data and metrics
-        // -----------------------------------------------------------------
         private void LoadSalesData()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -33,27 +29,34 @@ namespace FinalProj
                 {
                     connection.Open();
 
-                    // --- 1. Load Order Management Grid ---
-                    // Assuming 'Order' table contains Order_id, Employee_id, order_date, delivery_date
-                    // NOTE: Since you don't have a Customer table yet, the 'Customer' column will be NULL/empty.
+                    // --- 1. Load Order Management Grid with Order Total ---
+                    // This query calculates the total value for each order (Quantity * Price)
+                    // and groups the results by Order_id.
                     string orderQuery = @"
-                        SELECT 
-                            Order_id, 
-                            Employee_id AS Customer, -- Placeholder: Replace with actual Customer Name later
-                            order_date
-                        FROM dbo.[Order]";
+                        SELECT  
+                            T1.Order_id, 
+                            T1.Employee_id AS Creator_ID, -- Employee who created the order
+                            T1.order_date,
+                            SUM(CAST(T2.Quantity AS INT) * CAST(T2.Price AS DECIMAL(5, 2))) AS Total_Amount 
+                        FROM dbo.[Order] T1
+                        JOIN dbo.Product T2 ON T1.Order_id = T2.Order_id
+                        GROUP BY T1.Order_id, T1.Employee_id, T1.order_date
+                        ORDER BY T1.order_date DESC";
 
                     SqlDataAdapter orderAdapter = new SqlDataAdapter(orderQuery, connection);
                     DataTable ordersTable = new DataTable();
                     orderAdapter.Fill(ordersTable);
 
-                    // CRITICAL: Assuming your Order Management DataGridView is named 'dgvOrders'
-                    // If your grid is named 'dataGridView1', you must rename it or change the line below.
-                    dgvOrders.DataSource = ordersTable;
-                    dgvOrders.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                    // CRITICAL: Assuming your Order Management DataGridView is named 'dgvOrderManagement'
+                    // If this name is wrong, you will get an error. Check your designer.
+                    dgvOrderManagement.DataSource = ordersTable;
+
+                    // Format the Total Amount column as currency
+                    dgvOrderManagement.Columns["Total_Amount"].DefaultCellStyle.Format = "C2";
+
+                    dgvOrderManagement.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
                     // --- 2. Calculate Metrics (Orders Today & Total Orders/Customers) ---
-                    // NOTE: This assumes orders are sales orders, not purchase orders.
 
                     // a) Calculate Total Orders Today
                     string todayOrderQuery = @"
@@ -64,34 +67,27 @@ namespace FinalProj
                     using (SqlCommand todayOrderCmd = new SqlCommand(todayOrderQuery, connection))
                     {
                         object result = todayOrderCmd.ExecuteScalar();
-                        // CRITICAL: Assuming your "Orders Today" label is named 'lblOrdersToday'
-                        // You must rename your label or change the line below.
-                        lblOrdersToday.Text = result?.ToString() ?? "0";
+                        // label7 for "Orders Today"
+                        label7.Text = result?.ToString() ?? "0";
                     }
 
-                    // b) Calculate Total Customers/Orders (Used for Total Customers box)
+                    // b) Calculate Total Orders (Used for Total Customers box)
                     string totalOrderQuery = "SELECT COUNT(Order_id) FROM dbo.[Order]";
 
                     using (SqlCommand totalOrderCmd = new SqlCommand(totalOrderQuery, connection))
                     {
                         object result = totalOrderCmd.ExecuteScalar();
-                        // Assuming your "Total Customers" label is named 'lblTotalCustomers'
-                        // This metric is simplistic right now, as it's just a count of all orders.
-                        lblTotalCustomers.Text = result?.ToString() ?? "0";
+                        // label5 for "Total Customers" (currently counting all orders)
+                        label5.Text = result?.ToString() ?? "0";
                     }
 
-                    // c) Outstanding (You need a Status column in the Order table for this to work properly)
-                    // For now, let's keep it simple: assume all orders are outstanding until marked delivered.
-                    // If you added a 'Status' column to Order table:
-                    // string outstandingQuery = "SELECT COUNT(Order_id) FROM dbo.[Order] WHERE Status = 'Outstanding'";
-
-                    // Assuming your "Outstanding" label is named 'lblOutstanding'
-                    lblOutstanding.Text = "0"; // Defaulting to 0 until proper tracking is set up
+                    // c) Outstanding (Placeholder)
+                    // If your 'Outstanding' label is, for example, label9, uncomment and set its text.
+                    // label9.Text = "0"; 
 
                 }
                 catch (Exception ex)
                 {
-                    // Displays connection errors if the connectionString or server fails
                     MessageBox.Show("Error loading sales data: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -102,8 +98,6 @@ namespace FinalProj
         // -----------------------------------------------------------------
         private void Exx_Click(object sender, EventArgs e)
         {
-            // The Mainform constructor now needs the ID and Ranking, 
-            // but since this is navigation from the Mainform, we call the parameterless version.
             Mainform ScExit = new Mainform();
             ScExit.Show();
             this.Hide();

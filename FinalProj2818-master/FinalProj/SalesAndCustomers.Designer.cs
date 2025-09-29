@@ -29,33 +29,44 @@
         private void InitializeComponent()
         {
             lblTotalCustomers = new Panel();
+            label5 = new Label();
             label1 = new Label();
             lblOrdersToday = new Panel();
+            label7 = new Label();
             label2 = new Label();
-            lblOutstanding = new Panel();
-            label3 = new Label();
             panel6 = new Panel();
-            dgvOrders = new DataGridView();
+            dgvOrderManagement = new DataGridView();
             label4 = new Label();
             Exx = new Button();
             label6 = new Label();
             lblTotalCustomers.SuspendLayout();
             lblOrdersToday.SuspendLayout();
-            lblOutstanding.SuspendLayout();
             panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvOrderManagement).BeginInit();
             SuspendLayout();
             // 
             // lblTotalCustomers
             // 
             lblTotalCustomers.BackColor = SystemColors.ButtonFace;
             lblTotalCustomers.BorderStyle = BorderStyle.FixedSingle;
+            lblTotalCustomers.Controls.Add(label5);
             lblTotalCustomers.Controls.Add(label1);
-            lblTotalCustomers.Location = new Point(17, 113);
+            lblTotalCustomers.Location = new Point(122, 113);
             lblTotalCustomers.Margin = new Padding(4, 5, 4, 5);
             lblTotalCustomers.Name = "lblTotalCustomers";
             lblTotalCustomers.Size = new Size(392, 165);
             lblTotalCustomers.TabIndex = 0;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(164, 82);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(23, 28);
+            label5.TabIndex = 1;
+            label5.Text = "0";
             // 
             // label1
             // 
@@ -72,12 +83,24 @@
             // 
             lblOrdersToday.BackColor = SystemColors.ButtonFace;
             lblOrdersToday.BorderStyle = BorderStyle.FixedSingle;
+            lblOrdersToday.Controls.Add(label7);
             lblOrdersToday.Controls.Add(label2);
-            lblOrdersToday.Location = new Point(419, 113);
+            lblOrdersToday.Location = new Point(717, 113);
             lblOrdersToday.Margin = new Padding(4, 5, 4, 5);
             lblOrdersToday.Name = "lblOrdersToday";
             lblOrdersToday.Size = new Size(383, 165);
             lblOrdersToday.TabIndex = 1;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(175, 82);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(23, 28);
+            label7.TabIndex = 2;
+            label7.Text = "0";
             // 
             // label2
             // 
@@ -90,34 +113,11 @@
             label2.TabIndex = 0;
             label2.Text = "Orders Today";
             // 
-            // lblOutstanding
-            // 
-            lblOutstanding.BackColor = SystemColors.ButtonFace;
-            lblOutstanding.BorderStyle = BorderStyle.FixedSingle;
-            lblOutstanding.Controls.Add(label3);
-            lblOutstanding.Location = new Point(811, 113);
-            lblOutstanding.Margin = new Padding(4, 5, 4, 5);
-            lblOutstanding.Name = "lblOutstanding";
-            lblOutstanding.Size = new Size(413, 165);
-            lblOutstanding.TabIndex = 1;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(136, 15);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(125, 28);
-            label3.TabIndex = 0;
-            label3.Text = "Outstanding";
-            label3.Click += label3_Click;
-            // 
             // panel6
             // 
             panel6.BackColor = SystemColors.ButtonFace;
             panel6.BorderStyle = BorderStyle.FixedSingle;
-            panel6.Controls.Add(dgvOrders);
+            panel6.Controls.Add(dgvOrderManagement);
             panel6.Controls.Add(label4);
             panel6.Location = new Point(330, 297);
             panel6.Margin = new Padding(4, 5, 4, 5);
@@ -125,16 +125,16 @@
             panel6.Size = new Size(573, 612);
             panel6.TabIndex = 1;
             // 
-            // dgvOrders
+            // dgvOrderManagement
             // 
-            dgvOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvOrders.Location = new Point(21, 85);
-            dgvOrders.Margin = new Padding(4, 5, 4, 5);
-            dgvOrders.Name = "dgvOrders";
-            dgvOrders.RowHeadersWidth = 62;
-            dgvOrders.Size = new Size(524, 497);
-            dgvOrders.TabIndex = 2;
-            dgvOrders.CellContentClick += dataGridView1_CellContentClick;
+            dgvOrderManagement.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvOrderManagement.Location = new Point(21, 85);
+            dgvOrderManagement.Margin = new Padding(4, 5, 4, 5);
+            dgvOrderManagement.Name = "dgvOrderManagement";
+            dgvOrderManagement.RowHeadersWidth = 62;
+            dgvOrderManagement.Size = new Size(524, 497);
+            dgvOrderManagement.TabIndex = 2;
+            dgvOrderManagement.CellContentClick += dataGridView1_CellContentClick;
             // 
             // label4
             // 
@@ -179,7 +179,6 @@
             Controls.Add(label6);
             Controls.Add(Exx);
             Controls.Add(panel6);
-            Controls.Add(lblOutstanding);
             Controls.Add(lblOrdersToday);
             Controls.Add(lblTotalCustomers);
             Margin = new Padding(4, 5, 4, 5);
@@ -189,11 +188,9 @@
             lblTotalCustomers.PerformLayout();
             lblOrdersToday.ResumeLayout(false);
             lblOrdersToday.PerformLayout();
-            lblOutstanding.ResumeLayout(false);
-            lblOutstanding.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvOrderManagement).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -204,14 +201,14 @@
         private Label label1;
         private Panel lblOrdersToday;
         private Label label2;
-        private Panel lblOutstanding;
-        private Label label3;
         private Panel panel6;
         private Label label4;
         private Button Exx;
         private Button button2;
         private Button button1;
-        private DataGridView dgvOrders;
+        private DataGridView dgvOrderManagement;
         private Label label6;
+        private Label label5;
+        private Label label7;
     }
 }

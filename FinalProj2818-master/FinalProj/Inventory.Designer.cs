@@ -34,25 +34,20 @@
             label2 = new Label();
             panel3 = new Panel();
             label3 = new Label();
-            panel4 = new Panel();
-            label4 = new Label();
-            panel5 = new Panel();
-            label5 = new Label();
             panel6 = new Panel();
             dgvInventory = new DataGridView();
             label6 = new Label();
             panel7 = new Panel();
-            button3 = new Button();
-            button2 = new Button();
             CreatePurchaseOrderBtn = new Button();
             label7 = new Label();
             InvExit = new Button();
             label8 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label10 = new Label();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
-            panel4.SuspendLayout();
-            panel5.SuspendLayout();
             panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
             panel7.SuspendLayout();
@@ -62,6 +57,7 @@
             // 
             panel1.BackColor = Color.White;
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(label4);
             panel1.Controls.Add(label1);
             panel1.Location = new Point(17, 123);
             panel1.Margin = new Padding(4, 5, 4, 5);
@@ -84,8 +80,9 @@
             // 
             panel2.BackColor = Color.White;
             panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(label5);
             panel2.Controls.Add(label2);
-            panel2.Location = new Point(260, 123);
+            panel2.Location = new Point(258, 123);
             panel2.Margin = new Padding(4, 5, 4, 5);
             panel2.Name = "panel2";
             panel2.Size = new Size(233, 165);
@@ -95,7 +92,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(83, 17);
+            label2.Location = new Point(73, 17);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(85, 28);
@@ -106,8 +103,9 @@
             // 
             panel3.BackColor = Color.White;
             panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(label10);
             panel3.Controls.Add(label3);
-            panel3.Location = new Point(503, 123);
+            panel3.Location = new Point(499, 123);
             panel3.Margin = new Padding(4, 5, 4, 5);
             panel3.Name = "panel3";
             panel3.Size = new Size(233, 165);
@@ -123,50 +121,6 @@
             label3.Size = new Size(101, 28);
             label3.TabIndex = 0;
             label3.Text = "Stock Out";
-            // 
-            // panel4
-            // 
-            panel4.BackColor = Color.White;
-            panel4.BorderStyle = BorderStyle.FixedSingle;
-            panel4.Controls.Add(label4);
-            panel4.Location = new Point(746, 123);
-            panel4.Margin = new Padding(4, 5, 4, 5);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(233, 165);
-            panel4.TabIndex = 1;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(66, 17);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(107, 28);
-            label4.TabIndex = 0;
-            label4.Text = "Total SKUs";
-            // 
-            // panel5
-            // 
-            panel5.BackColor = Color.White;
-            panel5.BorderStyle = BorderStyle.FixedSingle;
-            panel5.Controls.Add(label5);
-            panel5.Location = new Point(989, 123);
-            panel5.Margin = new Padding(4, 5, 4, 5);
-            panel5.Name = "panel5";
-            panel5.Size = new Size(233, 165);
-            panel5.TabIndex = 1;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(41, 17);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(156, 28);
-            label5.TabIndex = 0;
-            label5.Text = "Inventory Value";
             // 
             // panel6
             // 
@@ -196,7 +150,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(197, 18);
+            label6.Location = new Point(240, 18);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(291, 28);
@@ -207,8 +161,6 @@
             // 
             panel7.BackColor = Color.White;
             panel7.BorderStyle = BorderStyle.FixedSingle;
-            panel7.Controls.Add(button3);
-            panel7.Controls.Add(button2);
             panel7.Controls.Add(CreatePurchaseOrderBtn);
             panel7.Controls.Add(label7);
             panel7.Location = new Point(834, 300);
@@ -216,28 +168,6 @@
             panel7.Name = "panel7";
             panel7.Size = new Size(388, 509);
             panel7.TabIndex = 1;
-            // 
-            // button3
-            // 
-            button3.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button3.Location = new Point(26, 235);
-            button3.Margin = new Padding(4, 5, 4, 5);
-            button3.Name = "button3";
-            button3.Size = new Size(340, 48);
-            button3.TabIndex = 3;
-            button3.Text = "Stock Transfer";
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(26, 160);
-            button2.Margin = new Padding(4, 5, 4, 5);
-            button2.Name = "button2";
-            button2.Size = new Size(340, 48);
-            button2.TabIndex = 2;
-            button2.Text = "Process Sales Order";
-            button2.UseVisualStyleBackColor = true;
             // 
             // CreatePurchaseOrderBtn
             // 
@@ -255,7 +185,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(163, 18);
+            label7.Location = new Point(119, 18);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(137, 28);
@@ -285,6 +215,39 @@
             label8.TabIndex = 16;
             label8.Text = "Inventory Managment";
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Location = new Point(101, 75);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(23, 28);
+            label4.TabIndex = 1;
+            label4.Text = "0";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(105, 75);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(23, 28);
+            label5.TabIndex = 2;
+            label5.Text = "0";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.Location = new Point(103, 75);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(23, 28);
+            label10.TabIndex = 3;
+            label10.Text = "0";
+            // 
             // Inventory
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -295,8 +258,6 @@
             Controls.Add(InvExit);
             Controls.Add(panel7);
             Controls.Add(panel6);
-            Controls.Add(panel5);
-            Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -309,10 +270,6 @@
             panel2.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
-            panel4.ResumeLayout(false);
-            panel4.PerformLayout();
-            panel5.ResumeLayout(false);
-            panel5.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
@@ -329,11 +286,7 @@
         private Panel panel2;
         private Label label2;
         private Panel panel3;
-        private Panel panel4;
-        private Label label4;
         private Label label3;
-        private Panel panel5;
-        private Label label5;
         private Panel panel6;
         private Label label6;
         private Panel panel7;
@@ -341,8 +294,9 @@
         private Button InvExit;
         private Label label8;
         private Button CreatePurchaseOrderBtn;
-        private Button button3;
-        private Button button2;
         private DataGridView dgvInventory;
+        private Label label4;
+        private Label label5;
+        private Label label10;
     }
 }

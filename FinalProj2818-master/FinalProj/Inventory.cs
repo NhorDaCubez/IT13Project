@@ -2,12 +2,13 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
+using System.Linq; // Added for easy counting of low/in/out stock items
 
 namespace FinalProj
 {
     public partial class Inventory : Form
     {
-        // *** CRITICAL: If LAPTOP-VHI1EE4Q fails, try the local instance shortcut: '.\SQLEXPRESS' ***
+        // Connection String
         private const string connectionString = "Data Source=LAPTOP-VHI1EE4Q\\SQLEXPRESS;Initial Catalog=FinalProjectDB;Integrated Security=True;TrustServerCertificate=True";
 
         public Inventory()
@@ -43,31 +44,52 @@ namespace FinalProj
                     DataTable inventoryTable = new DataTable();
                     adapter.Fill(inventoryTable);
 
-                    // --- CALCULATE STATUS ---
+                    // --- 1. CALCULATE STATUS AND INVENTORY METRICS ---
                     inventoryTable.Columns.Add("Status", typeof(string));
                     int lowStockThreshold = 10;
                     int outOfStockThreshold = 1;
 
+                    int lowStockCount = 0;
+                    int inStockCount = 0;
+                    int outOfStockCount = 0;
+
                     foreach (DataRow row in inventoryTable.Rows)
                     {
                         int quantity = (int)row["Quantity"];
+                        string status = "";
 
                         if (quantity < outOfStockThreshold)
-                            row["Status"] = "Out of Stock";
+                        {
+                            status = "Out of Stock";
+                            outOfStockCount++;
+                        }
                         else if (quantity <= lowStockThreshold)
-                            row["Status"] = "Low Stock";
+                        {
+                            status = "Low Stock";
+                            lowStockCount++;
+                        }
                         else
-                            row["Status"] = "In Stock";
+                        {
+                            status = "In Stock";
+                            inStockCount++;
+                        }
+                        row["Status"] = status;
                     }
 
-                    // --- ADD LOCATION (UI column) ---
+                    // --- 2. UPDATE LABELS (Low Stock=label4, Stock In=label5, Stock Out=label10) ---
+                    // **CRITICAL: Ensure your designer labels are named label4, label5, and label10.**
+                    label4.Text = lowStockCount.ToString(); // Low Stock
+                    label5.Text = inStockCount.ToString();  // Stock In
+                    label10.Text = outOfStockCount.ToString(); // Stock Out
+
+                    // --- 3. ADD LOCATION (UI column) ---
                     inventoryTable.Columns.Add("Location", typeof(string), "'Main Warehouse'");
 
-                    // --- BIND DATA ---
+                    // --- 4. BIND DATA ---
                     // This assumes the DataGridView is named dgvInventory.
                     dgvInventory.DataSource = inventoryTable;
 
-                    // --- FORMAT HEADERS (To match your UI design columns) ---
+                    // --- 5. FORMAT HEADERS (To match your UI design columns) ---
                     dgvInventory.Columns["Employee_ID"].HeaderText = "Employee";
                     dgvInventory.Columns["Product"].HeaderText = "Product";
                     dgvInventory.Columns["Quantity"].HeaderText = "Stock Level";
@@ -94,6 +116,7 @@ namespace FinalProj
 
         private void CreatePurchaseOrderBtn_Click(object sender, EventArgs e)
         {
+            // *** CRITICAL: You must pass the Employee ID to CreatePurchaseOrder here ***
             CreatePurchaseOrder Form = new CreatePurchaseOrder();
             Form.Show();
             this.Hide();

@@ -92,9 +92,9 @@
             Username.Location = new Point(66, 185);
             Username.Margin = new Padding(4, 5, 4, 5);
             Username.Name = "Username";
+            Username.PlaceholderText = "Employee ID";
             Username.Size = new Size(453, 31);
             Username.TabIndex = 3;
-            Username.Text = "Employee ID";
             Username.TextChanged += Username_TextChanged;
             // 
             // label4

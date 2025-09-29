@@ -148,7 +148,7 @@
             button5.Name = "button5";
             button5.Size = new Size(323, 52);
             button5.TabIndex = 5;
-            button5.Text = "Supply Chain and Logistics";
+            button5.Text = "Logistics";
             button5.UseVisualStyleBackColor = true;
             button5.Click += SupplyChainAndLogistics_Click;
             // 
