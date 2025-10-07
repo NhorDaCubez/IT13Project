@@ -1,14 +1,14 @@
 using System;
 using System.Data;
-using Microsoft.Data.SqlClient; // Required for database connection
+using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace FinalProj
 {
     public partial class Form1 : Form
     {
-        // Using the most reliable connection string format
-        private const string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=FinalProjectDB;Integrated Security=True;TrustServerCertificate=True";
+        // Using the server name from your screenshots for reliability
+        private const string connectionString = "Data Source=LAPTOP-VHI1EE4Q\\SQLEXPRESS;Initial Catalog=FinalProjectDB;Integrated Security=True;TrustServerCertificate=True";
 
         public Form1()
         {
@@ -17,15 +17,17 @@ namespace FinalProj
 
         private void Login(object sender, EventArgs e)
         {
-            // The code reads from txtEmployeeId, which is the box you should label "Employee Number"
+            // 1. Validate Employee ID input
             if (!int.TryParse(Username.Text, out int employeeId))
             {
-                MessageBox.Show("Please enter a valid Employee Number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter a valid Employee ID (number).", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. Authenticate and retrieve the user's role (Ranking)
-            string userRanking = AuthenticateUserAndGetRole(employeeId);
+            string inputPassword = Password.Text.Trim();
+
+            // 2. Authenticate and retrieve user data
+            string userRanking = AuthenticateUserAndGetRole(employeeId, inputPassword);
 
             if (userRanking != null)
             {
@@ -33,29 +35,24 @@ namespace FinalProj
                 MessageBox.Show($"Login Successful. Role: {userRanking}", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // 3. Open Mainform and pass the authenticated ID and Role
-                // This requires the updated Mainform constructor: public Mainform(int employeeId, string userRanking)
                 Mainform Main = new Mainform(employeeId, userRanking);
                 Main.Show();
                 this.Hide();
             }
             else
             {
-                // Login failed or Database Error (message shown inside AuthenticateUserAndGetRole)
-                // Only show a generic failure message here if the database didn't display an error.
-                if (string.IsNullOrEmpty(Username.Text))
-                {
-                    MessageBox.Show("Login failed. Employee Number not found.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // General failure message for invalid ID or password
+                MessageBox.Show("Login failed. Invalid Employee ID or Password.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         // -----------------------------------------------------------------
-        // NEW METHOD: Checks database for employee and returns their role
+        // UPDATED METHOD: Authenticates user based on ID and checks password against full name for Managers.
         // -----------------------------------------------------------------
-        private string AuthenticateUserAndGetRole(int employeeId)
+        private string AuthenticateUserAndGetRole(int employeeId, string inputPassword)
         {
-            // Query selects the Ranking column you added to the Employee table
-            string query = "SELECT Ranking FROM Employee WHERE Employee_id = @EmployeeId";
+            // Query selects the required authentication details and role
+            string query = "SELECT First_name, Last_name, Ranking FROM Employee WHERE Employee_id = @EmployeeId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -66,18 +63,42 @@ namespace FinalProj
                     {
                         command.Parameters.AddWithValue("@EmployeeId", employeeId);
 
-                        object result = command.ExecuteScalar();
-
-                        if (result != null && result != DBNull.Value)
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            return result.ToString(); // Returns the ranking (e.g., "Manager", "Staff")
+                            if (reader.Read())
+                            {
+                                string firstName = reader["First_name"].ToString().Trim();
+                                string lastName = reader["Last_name"].ToString().Trim();
+                                string ranking = reader["Ranking"].ToString().Trim();
+
+                                // Calculate the required password (Full Name)
+                                string requiredPassword = $"{firstName} {lastName}";
+
+                                // Authentication Logic:
+                                if (ranking == "Manager")
+                                {
+                                    // Manager: Password must match the Full Name
+                                    if (inputPassword == requiredPassword)
+                                    {
+                                        return ranking;
+                                    }
+                                }
+                                else // Staff or any other role
+                                {
+                                    // Staff/Other: Only needs a non-empty password (or you can remove this check)
+                                    if (!string.IsNullOrEmpty(inputPassword))
+                                    {
+                                        return ranking;
+                                    }
+                                }
+                            }
+                            // If reader.Read() is false, the Employee ID was not found.
+                            return null;
                         }
-                        return null; // Employee not found
                     }
                 }
                 catch (Exception ex)
                 {
-                    // This is essential for debugging the connection issues (like error 40 or certificate)
                     MessageBox.Show("Database Connection Error during login: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return null;
                 }
